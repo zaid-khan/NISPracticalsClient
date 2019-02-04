@@ -1,5 +1,5 @@
 import tkinter as tk
-from symmetricciphers import caesar_encryption
+from SymmetricCiphers.caesar import caesar_encryption
 from client import send_data_to_server
 
 from tkinter.font import Font
