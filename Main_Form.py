@@ -50,13 +50,14 @@ def Pass_Text():
         elif tkvarsymmetric.get() == "Hill Cipher":
             try:
                 key_value = ent2.get()
+                plaintxt = ent.get().replace(' ', '')
                 if len(key_value) != 9:
                     raise ValueError("Key Length is not equal to 6") 
             except ValueError:
                 messagebox.showerror("Error", "Please enter a key of length : 6")
                 return
 
-            cipher = HillCipherEncryptWrapper(ent.get(), key_value)
+            cipher = HillCipherEncryptWrapper(plaintxt, key_value)
             send_data_to_server(cipher)        
 
 
