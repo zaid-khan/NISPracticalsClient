@@ -1,5 +1,8 @@
 import tkinter as tk
 from SymmetricCiphers.caesar import caesar_encryption
+from SymmetricCiphers.hillcipher import HillCipherEncryptWrapper
+
+
 from client import send_data_to_server
 
 from tkinter.font import Font
@@ -39,9 +42,21 @@ def Pass_Text():
                 key_value = key_value % 26
             except ValueError:
                 messagebox.showerror("Error", "Please enter a number")
-            
+                return
 
             cipher = caesar_encryption(ent.get(), key_value)
+            send_data_to_server(cipher)
+
+        elif tkvarsymmetric.get() == "Hill Cipher":
+            try:
+                key_value = ent2.get()
+                if len(key_value) != 9:
+                    raise ValueError("Key Length is not equal to 6") 
+            except ValueError:
+                messagebox.showerror("Error", "Please enter a key of length : 6")
+                return
+
+            cipher = HillCipherEncryptWrapper(ent.get(), key_value)
             send_data_to_server(cipher)        
 
 
@@ -54,7 +69,7 @@ optionFrame.pack(side=tk.BOTTOM, fill=tk.X, padx=20, pady=20)
 
 tkvarsymmetric = tk.StringVar()
 # List with options
-choicessy = {'Caesar', 'Modified Caesar'}
+choicessy = {'Caesar', 'Hill Cipher'}
 tkvarsymmetric.set('Caesar')
 popupMenuSy = tk.OptionMenu(optionFrame, tkvarsymmetric, *choicessy)
 popupMenuSy.pack(side=tk.TOP, padx=20, pady=20)

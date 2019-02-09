@@ -6,3 +6,4 @@ def caesar_encryption(str, key_value):
         ascii_value = ord(s) - 97
         ct += chr(((ascii_value + key_value) % 26 + 97))
     return ct
+    
