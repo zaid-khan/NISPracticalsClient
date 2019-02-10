@@ -1,7 +1,7 @@
 import tkinter as tk
 from SymmetricCiphers.caesar import caesar_encryption
 from SymmetricCiphers.hillcipher import HillCipherEncryptWrapper
-
+from SymmetricCiphers.playfair import PlayFairEncrypt
 
 from client import send_data_to_server
 
@@ -47,7 +47,7 @@ def Pass_Text():
             cipher = caesar_encryption(ent.get(), key_value)
             send_data_to_server(cipher)
 
-        elif tkvarsymmetric.get() == "Hill Cipher":
+        elif tkvarsymmetric.get() == "Hill":
             try:
                 key_value = ent2.get()
                 plaintxt = ent.get().replace(' ', '')
@@ -60,6 +60,19 @@ def Pass_Text():
             cipher = HillCipherEncryptWrapper(plaintxt, key_value)
             send_data_to_server(cipher)        
 
+        elif tkvarsymmetric.get() == "Playfair":
+            try:
+                key_value = ent2.get()
+                plaintxt = ent.get().replace(' ', '')
+                if len(key_value) == 0:
+                    raise ValueError("Key Length should not be equal to Zero") 
+            except ValueError:
+                messagebox.showerror("Error", "Key Length should not be equal to Zero")
+                return
+
+            cipher = PlayFairEncrypt(plaintxt, key_value)
+            send_data_to_server(cipher)        
+
 
 mainFrame = tk.Frame(root)
 mainFrame.pack(side=tk.BOTTOM, fill=tk.X, padx=20, pady=20)
@@ -70,7 +83,7 @@ optionFrame.pack(side=tk.BOTTOM, fill=tk.X, padx=20, pady=20)
 
 tkvarsymmetric = tk.StringVar()
 # List with options
-choicessy = {'Caesar', 'Hill Cipher'}
+choicessy = {'Caesar', 'Hill', 'Playfair'}
 tkvarsymmetric.set('Caesar')
 popupMenuSy = tk.OptionMenu(optionFrame, tkvarsymmetric, *choicessy)
 popupMenuSy.pack(side=tk.TOP, padx=20, pady=20)
