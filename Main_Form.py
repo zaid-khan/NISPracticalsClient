@@ -2,6 +2,7 @@ import tkinter as tk
 from SymmetricCiphers.caesar import caesar_encryption
 from SymmetricCiphers.hillcipher import HillCipherEncryptWrapper
 from SymmetricCiphers.playfair import PlayFairEncrypt
+from SymmetricCiphers.sdes import SDESEncrypt
 
 from client import send_data_to_server
 
@@ -71,7 +72,26 @@ def Pass_Text():
                 return
 
             cipher = PlayFairEncrypt(plaintxt, key_value)
+            send_data_to_server(cipher)
+
+        elif tkvarsymmetric.get() == "S-DES":
+            try:
+                key_value = ent2.get()
+                plaintxt = ent.get().replace(' ', '')
+                
+                if len(key_value) != 10:
+                    raise ValueError("Key is invalid")
+                
+                if len(plaintxt) != 1:
+                    raise ValueError("Plaintext is invalid")
+                 
+            except ValueError:
+                messagebox.showerror("Error", "Key/Plaintext is invalid")
+                return
+
+            cipher = SDESEncrypt(key_value, plaintxt)
             send_data_to_server(cipher)        
+        
 
 
 mainFrame = tk.Frame(root)
@@ -83,7 +103,7 @@ optionFrame.pack(side=tk.BOTTOM, fill=tk.X, padx=20, pady=20)
 
 tkvarsymmetric = tk.StringVar()
 # List with options
-choicessy = {'Caesar', 'Hill', 'Playfair'}
+choicessy = {'Caesar', 'Hill', 'Playfair', 'S-DES'}
 tkvarsymmetric.set('Caesar')
 popupMenuSy = tk.OptionMenu(optionFrame, tkvarsymmetric, *choicessy)
 popupMenuSy.pack(side=tk.TOP, padx=20, pady=20)
